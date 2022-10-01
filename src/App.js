@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios'
+import React, {useState, useEffect } from 'react'
+import './App.css'
 
-function App() {
+import Table from './TableComponents/Table'
+
+const App = () => {
+  const [dataTable, setDataTable] = useState([]);
+  useEffect(() => {
+    axios('https://jsonplaceholder.typicode.com/users')
+      .then(res => setDataTable(res.data))
+      .catch(err => console.log(err))
+  }, []);
+
+  const column = [
+    { heading: 'Name', value: 'name' },
+    { heading: 'Email', value: 'email' },
+    { heading: 'Phone', value: 'phone' },
+  ]
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className='App'>
+        <h1>Dynamic Table</h1>
+        <Table data={dataTable} column={column}/>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
